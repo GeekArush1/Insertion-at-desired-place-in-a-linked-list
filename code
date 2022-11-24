@@ -1,0 +1,97 @@
+#include <iostream>
+using namespace std;
+struct node{
+    int info;
+    struct node* link;
+};
+typedef struct node;
+void display_linked_list(node *head){
+    node *temp=head;
+    while(temp){
+        cout<<temp->info<<endl;
+        temp=temp->link;
+    }
+}
+void insertion_at_beginning(node **head, int value){
+    node *new_element=(node *)malloc(sizeof(node));
+    new_element->info=value;
+    new_element->link=*head;
+    *head=new_element;
+}
+void insertion_at_last(node **head,int value){
+    node *new_element=(node *)malloc(sizeof(node));
+    new_element->info=value;
+    new_element->link=NULL;
+    if(*head==NULL){
+        *head=new_element;
+        return;
+    }
+    struct node *temp=*head;
+    while (temp->link!=NULL){
+        temp=temp->link;
+    }
+    temp->link=new_element;
+}
+void insertion_before_index(node **head, int value, int loc){
+    node *new_element=(node *)malloc(sizeof(node));
+    new_element->info=value;
+    node *save=NULL;
+    save->link=*head;
+    for(int i=0;i<loc;i++){
+        save=save->link;
+    }
+    new_element->link=save->link;
+    save->link=new_element;
+}
+void insertion_after_index(node **head, int value, int loc){
+    node *new_element=(node *)malloc(sizeof(node));
+    new_element->info=value;
+    node *ptr=*head;
+    for(int i=0;i<loc;i++){
+        ptr=ptr->link;
+    }
+    new_element->link=ptr->link;
+    ptr->link=new_element;
+}
+int main() {
+    int n,x,value,loc;
+    cout<<"Number of operations that you want to perform in the linked list; "<<endl;
+    cin>>n;
+    node *head=NULL;
+    for(int i=0;i<n;i++){
+        cout<<"Enter 1 for insertion in starting, 2 for insertion in ending, 3 for insertion after a location and 4 for insertion before a location"<<endl;
+        cin>>x;
+        if(x==1){
+            cout<<"Enter the value to be inserted"<<endl;
+            cin>>value;
+            insertion_at_beginning(&head,value);
+            display_linked_list(head);
+        }
+        if(x==2){
+            cout<<"Enter the value to be inserted"<<endl;
+            cin>>value;
+            insertion_at_last(&head,value);
+            display_linked_list(head);
+
+        }
+        if(x==3){
+            cout<<"Enter the value to be inserted"<<endl;
+            cin>>value;
+            cout<<"Enter the position at which element is to be inserted"<<endl;
+            cin>>loc;
+            loc+=1;
+            insertion_after_index(&head,value,loc);
+            display_linked_list(head);
+        }
+        if(x==4){
+            cout<<"Enter the value to be inserted"<<endl;
+            cin>>value;
+            cout<<"Enter the position at which element is to be inserted"<<endl;
+            cin>>loc;
+            loc+=1;
+            insertion_before_index(&head,value,loc);
+            display_linked_list(head);
+        }
+    }
+    return 0;
+}
